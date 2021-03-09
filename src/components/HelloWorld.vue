@@ -32,17 +32,17 @@
 <!--            />-->
             <div style="margin: 16px;">
                 <van-button v-show="!clicked" round block type="info" native-type="submit">计算</van-button>
-                <van-button v-show="clicked" loading round block  type="info" loading-text="计算中..." />
+<!--                <van-button v-show="clicked" loading round block  type="info" loading-text="计算中..." />-->
 
 
             </div>
-            <div id="zuobiao" style="padding: 10px;">
-<!--                <svg width="500" height="270">-->
-<!--                    <g style="transform: translate(0, 10px)">-->
-<!--                        <path :d="line" />-->
-<!--                    </g>-->
-<!--                </svg>-->
-            </div>
+            <van-row>
+                <van-col span="24">
+                    <div id="zuobiao">
+                    </div>
+                </van-col>
+            </van-row>
+
         </van-form>
     </div>
 </template>
@@ -62,20 +62,20 @@
                 listmap:{
                     '0':[{
                         itemname:'横格',
-                        itemattr:'0-tie',
-                        itemvalue:''
+                        itemattr:'0-heng',
+                        itemvalue:'2'
                     },{
                         itemname:'纵格',
-                        itemattr:'0-mu',
-                        itemvalue:''
+                        itemattr:'0-zong',
+                        itemvalue:'3'
                     },{
-                        itemname:'间隔',
-                        itemattr:'0-jinbi',
-                        itemvalue:''
+                        itemname:'跨度',
+                        itemattr:'0-kuadu',
+                        itemvalue:'288'
                     },{
-                        itemname:'人口',
-                        itemattr:'0-penple',
-                        itemvalue:''
+                        itemname:'层高',
+                        itemattr:'0-cenggao',
+                        itemvalue:'144'
                     }],
                     '1':[{
                         itemname:'水晶',
@@ -111,12 +111,13 @@
             };
         },
         mounted() {
-            this.calculatePath();
+            // this.calculatePath();
         },
         methods: {
             onSubmit(values) {
                 console.log('submit', values);
-                this.clicked=true
+                // this.clicked=true
+                this.calculatePath(values.横格,values.纵格,values.跨度,values.层高)
             },
             getScales() {
                 const x = d3.scaleTime().range([0, 430]);
@@ -130,7 +131,8 @@
             setzong(svg,hang,zong,hc,zg) {
                 for (var i=0;i<hang;i++) {
                     svg.append('line')
-                        .style("stroke", "black")
+                        .style("stroke", "#b021ad")
+                        .style("stroke-width", 3)
                         .attr("x1", hc*i)
                         .attr("y1", 0)
                         .attr("x2", hc*i)
@@ -139,12 +141,24 @@
             },
             sethang(svg,hang,zong,hc,zg) {
                 for (var i=0;i<zong;i++) {
-                    svg.append('line')
-                        .style("stroke", "black")
-                        .attr("x1", 0)
-                        .attr("y1", zg*i)
-                        .attr("x2", hc*(hang-1))
-                        .attr("y2", zg*i);
+                    if (i == zong - 1) {
+                        svg.append('line')
+                            .style("stroke", "black")
+                            .style("stroke-width", 4)
+                            .attr("x1", 0)
+                            .attr("y1", zg*i)
+                            .attr("x2", hc*(hang-1))
+                            .attr("y2", zg*i);
+                    }else {
+                        svg.append('line')
+                            .style("stroke", "#b021ad")
+                            .style("stroke-width", 3)
+                            .attr("x1", 0)
+                            .attr("y1", zg*i)
+                            .attr("x2", hc*(hang-1))
+                            .attr("y2", zg*i);
+                    }
+
                 }
             },
             setjiaodian(svg,hang,zong,hc,zg) {
@@ -165,8 +179,6 @@
                             .text('A'+a+j)
                     }
                 }
-
-                console.log(hangarr, zongarr);
             },
             drawfang(svg,hang,zong,hc,zg){
                 this.sethang(svg,hang,zong,hc,zg)
@@ -174,24 +186,28 @@
                 this.setjiaodian(svg,hang,zong,hc,zg)
             },
 
-            calculatePath() {
+            calculatePath(hang,zong,hc,zg) {
+                d3.selectAll("svg").remove();
                 var width = '100%', height = 700;
-                // var zoom = d3.behavior.zoom()
-                //     .translate([0, 0])
-                //     .scaleExtent([1, 10])
-                //     .scale(1)
-                //     .on("zoom", function () {
-                //         x=d3.event.translate[0];
-                //         y=d3.event.translate[1];
-                //         s=d3.event.scale;
-                //         container.attr("transform", "translate(" + d3.event.translate + ") scale(" + d3.event.scale + ")");
-                //     });
+
+
+                var zoom = d3.zoom()
+                    .scaleExtent([1, 10])  //缩放范围
+                    .on("zoom", zoomed);
                 var svg = d3.select("#zuobiao")
                     .append("svg")
                     .attr("width", width)
                     .attr("height", height)
-                    // .call(zoom)
-                this.drawfang(svg,5,4,288,144)
+                    .call(zoom)
+                function zoomed({transform}) {
+                    console.log('transform', transform);
+                    container.attr("transform", transform);
+                }
+                var container=svg.append("g")
+                    .attr('transform', "translate(10, 10)")
+
+
+                this.drawfang(container,hang,zong,hc,zg)
             },
 
 
