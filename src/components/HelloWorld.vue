@@ -36,7 +36,7 @@
 
 
             </div>
-            <div id="zuobiao">
+            <div id="zuobiao" style="padding: 10px;">
 <!--                <svg width="500" height="270">-->
 <!--                    <g style="transform: translate(0, 10px)">-->
 <!--                        <path :d="line" />-->
@@ -127,34 +127,34 @@
                 y.domain([0, d3.max(this.data, d => d)]);
                 return { x, y };
             },
-            sethang(svg,hang,zong) {
+            setzong(svg,hang,zong,hc,zg) {
                 for (var i=0;i<hang;i++) {
                     svg.append('line')
                         .style("stroke", "black")
-                        .attr("x1", 100*i)
+                        .attr("x1", hc*i)
                         .attr("y1", 0)
-                        .attr("x2", 100*i)
-                        .attr("y2", 100*(zong-1));
+                        .attr("x2", hc*i)
+                        .attr("y2", zg*(zong-1));
                 }
             },
-            setzong(svg,hang,zong) {
+            sethang(svg,hang,zong,hc,zg) {
                 for (var i=0;i<zong;i++) {
                     svg.append('line')
                         .style("stroke", "black")
                         .attr("x1", 0)
-                        .attr("y1", 100*i)
-                        .attr("x2", 100*(hang-1))
-                        .attr("y2", 100*i);
+                        .attr("y1", zg*i)
+                        .attr("x2", hc*(hang-1))
+                        .attr("y2", zg*i);
                 }
             },
-            setjiaodian(svg,hang,zong) {
+            setjiaodian(svg,hang,zong,hc,zg) {
                 var hangarr=[]
                 var zongarr=[]
                 for (var i=0;i<hang;i++) {
-                    hangarr.push(i*100)
+                    hangarr.push(i*hc)
                 }
                 for (var k=0;k<zong;k++) {
-                    zongarr.push(k*100)
+                    zongarr.push(k*zg)
                 }
                 for (var a=0;a<hangarr.length;a++) {
                     for (var j=0;j<zongarr.length;j++) {
@@ -168,21 +168,30 @@
 
                 console.log(hangarr, zongarr);
             },
+            drawfang(svg,hang,zong,hc,zg){
+                this.sethang(svg,hang,zong,hc,zg)
+                this.setzong(svg,hang,zong,hc,zg)
+                this.setjiaodian(svg,hang,zong,hc,zg)
+            },
 
             calculatePath() {
-                var width = 700, height = 700;
-
+                var width = '100%', height = 700;
+                // var zoom = d3.behavior.zoom()
+                //     .translate([0, 0])
+                //     .scaleExtent([1, 10])
+                //     .scale(1)
+                //     .on("zoom", function () {
+                //         x=d3.event.translate[0];
+                //         y=d3.event.translate[1];
+                //         s=d3.event.scale;
+                //         container.attr("transform", "translate(" + d3.event.translate + ") scale(" + d3.event.scale + ")");
+                //     });
                 var svg = d3.select("#zuobiao")
                     .append("svg")
                     .attr("width", width)
                     .attr("height", height)
-                    .attr("transform", "translate(50, 50)")
-
-                this.sethang(svg,6,6)
-                this.setzong(svg,6,6)
-                this.setjiaodian(svg,6,6)
-
-
+                    // .call(zoom)
+                this.drawfang(svg,5,4,288,144)
             },
 
 
