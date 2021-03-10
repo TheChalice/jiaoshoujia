@@ -17,19 +17,12 @@
         <van-form @submit="onSubmit">
             <div  v-for="(item)  in listmap[value1]" :key="item.username">
                 <van-field  v-model=item.itemvalue
-                            :name=item.itemname
+                            :name=item.itemattr
                             :label=item.itemname
                             :placeholder=item.itemname
                 />
             </div>
 
-<!--            <van-field-->
-<!--                    v-model="password"-->
-<!--                    type="password"-->
-<!--                    name="密码"-->
-<!--                    label="密码"-->
-<!--                    placeholder="密码"-->
-<!--            />-->
             <div style="margin: 16px;">
                 <van-button v-show="!clicked" round block type="info" native-type="submit">计算</van-button>
 <!--                <van-button v-show="clicked" loading round block  type="info" loading-text="计算中..." />-->
@@ -63,18 +56,22 @@
                     '0':[{
                         itemname:'横格',
                         itemattr:'0-heng',
+                        itemlabel:'heng',
                         itemvalue:'2'
                     },{
                         itemname:'纵格',
                         itemattr:'0-zong',
+                        itemlabel:'zong',
                         itemvalue:'3'
                     },{
                         itemname:'跨度',
                         itemattr:'0-kuadu',
+                        itemlabel:'kuadu',
                         itemvalue:'288'
                     },{
                         itemname:'层高',
                         itemattr:'0-cenggao',
+                        itemlabel:'cenggao',
                         itemvalue:'144'
                     }],
                     '1':[{
@@ -117,16 +114,7 @@
             onSubmit(values) {
                 console.log('submit', values);
                 // this.clicked=true
-                this.calculatePath(values.横格,values.纵格,values.跨度,values.层高)
-            },
-            getScales() {
-                const x = d3.scaleTime().range([0, 430]);
-                const y = d3.scaleLinear().range([210, 0]);
-                d3.axisLeft().scale(x);
-                d3.axisBottom().scale(y);
-                x.domain(d3.extent(this.data, (d, i) => i));
-                y.domain([0, d3.max(this.data, d => d)]);
-                return { x, y };
+                this.calculatePath(values['0-heng'],values['0-zong'],values['0-kuadu'],values['0-cenggao'])
             },
             setzong(svg,hang,zong,hc,zg) {
                 for (var i=0;i<hang;i++) {
@@ -185,14 +173,11 @@
                 this.setzong(svg,hang,zong,hc,zg)
                 this.setjiaodian(svg,hang,zong,hc,zg)
             },
-
             calculatePath(hang,zong,hc,zg) {
                 d3.selectAll("svg").remove();
                 var width = '100%', height = 700;
-
-
                 var zoom = d3.zoom()
-                    .scaleExtent([1, 10])  //缩放范围
+                    .scaleExtent([0.1, 10])  //缩放范围
                     .on("zoom", zoomed);
                 var svg = d3.select("#zuobiao")
                     .append("svg")
@@ -200,17 +185,12 @@
                     .attr("height", height)
                     .call(zoom)
                 function zoomed({transform}) {
-                    console.log('transform', transform);
                     container.attr("transform", transform);
                 }
                 var container=svg.append("g")
                     .attr('transform', "translate(10, 10)")
-
-
                 this.drawfang(container,hang,zong,hc,zg)
             },
-
-
         },
 
     }
