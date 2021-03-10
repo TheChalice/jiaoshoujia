@@ -14,20 +14,47 @@
         <!--                @cancel="onCancel"-->
         <!--                @change="onChange"-->
         <!--        />-->
-        <van-form @submit="onSubmit">
-            <div  v-for="(item)  in listmap[value1]" :key="item.username">
-                <van-field  v-model=item.itemvalue
-                            :name=item.itemattr
-                            :label=item.itemname
-                            :placeholder=item.itemname
+        <van-form @submit="onSubmit" >
+
+            <div v-for="(item)  in listmap[value1]" :key="item.username" v-show="item.itemstep===step">
+                <van-field v-model=item.itemvalue
+                           v-if="item.itemtype==='input'"
+                           :name=item.itemattr
+                           :label=item.itemname
+                           :placeholder=item.itemname
                 />
+                <van-field
+                        v-if="item.itemtype==='radio'"
+                        :name=item.itemattr
+                        :label=item.itemname
+                        validate-trigger="onChange"
+                >
+                    <template #input>
+                        <van-radio-group v-model=item.itemvalue
+                                         direction="horizontal">
+                            <van-radio v-for="(radio)  in item.itemradioarr" :key="radio" :name="radio">
+                                {{radio}}
+                            </van-radio>
+                        </van-radio-group>
+                    </template>
+                </van-field>
+                <div v-if="item.itemname==='截面形状'">
+                    <div v-for="(chicun)  in item.itemchicun[item.itemvalue]" :key="chicun.username">
+                        <van-field v-model=chicun.itemvalue
+                                   v-if="chicun.itemtype==='input'"
+                                   :name=chicun.itemattr
+                                   :label=chicun.itemname
+                                   :placeholder=chicun.itemname
+                        />
+                    </div>
+
+                </div>
+
             </div>
 
             <div style="margin: 16px;">
                 <van-button v-show="!clicked" round block type="info" native-type="submit">计算</van-button>
-<!--                <van-button v-show="clicked" loading round block  type="info" loading-text="计算中..." />-->
-
-
+                <!--                <van-button v-show="clicked" loading round block  type="info" loading-text="计算中..." />-->
             </div>
             <van-row>
                 <van-col span="24">
@@ -42,6 +69,7 @@
 
 <script>
     import * as d3 from 'd3'
+
     export default {
 
         name: 'HelloWorld',
@@ -50,47 +78,98 @@
         },
         data() {
             return {
-                data: [0, 1, 2, 3, 4, 5],
                 line: '',
-                listmap:{
-                    '0':[{
-                        itemname:'横格',
-                        itemattr:'0-heng',
-                        itemlabel:'heng',
-                        itemvalue:'2'
-                    },{
-                        itemname:'纵格',
-                        itemattr:'0-zong',
-                        itemlabel:'zong',
-                        itemvalue:'3'
-                    },{
-                        itemname:'跨度',
-                        itemattr:'0-kuadu',
-                        itemlabel:'kuadu',
-                        itemvalue:'288'
-                    },{
-                        itemname:'层高',
-                        itemattr:'0-cenggao',
-                        itemlabel:'cenggao',
-                        itemvalue:'144'
+                step: '1',
+                listmap: {
+                    '0': [{
+                        itemname: '横格',
+                        itemattr: '0-heng',
+                        itemstep: '1',
+                        itemtype: 'input',
+                        itemvalue: '2'
+                    }, {
+                        itemname: '纵格',
+                        itemattr: '0-zong',
+                        itemstep: '1',
+                        itemtype: 'input',
+                        itemvalue: '3'
+                    }, {
+                        itemname: '跨度',
+                        itemattr: '0-kuadu',
+                        itemstep: '1',
+                        itemtype: 'input',
+                        itemvalue: '288'
+                    }, {
+                        itemname: '层高',
+                        itemattr: '0-cenggao',
+                        itemstep: '1',
+                        itemtype: 'input',
+                        itemvalue: '144'
+                    }, {
+                        itemname: '起点',
+                        itemattr: '0-source@0',
+                        itemstep: '2',
+                        itemtype: 'input',
+                        itemvalue: ''
+                    }, {
+                        itemname: '终点',
+                        itemattr: '0-target@0',
+                        itemstep: '2',
+                        itemtype: 'input',
+                        itemvalue: ''
+                    }, {
+                        itemname: '材料',
+                        itemattr: '0-cailiao@0',
+                        itemstep: '2',
+                        itemtype: 'radio',
+                        itemvalue: 'Q235',
+                        itemradioarr: ['Q235', 'Q385']
+                    }, {
+                        itemname: '截面形状',
+                        itemattr: '0-jiemian@0',
+                        itemstep: '2',
+                        itemtype: 'radio',
+                        itemvalue: '圆形',
+                        itemradioarr: ['圆形', '柱形'],
+                        itemchicun:{'圆形':[{
+                                itemname: '半径',
+                                itemattr: '0-banjing@0',
+                                itemstep: '2',
+                                itemtype: 'input',
+                                itemvalue: ''
+                            }],'柱形':[{
+                                itemname: '长度',
+                                itemattr: '0-changdu@0',
+                                itemstep: '2',
+                                itemtype: 'input',
+                                itemvalue: ''
+                            }, {
+                                itemname: '宽度',
+                                itemattr: '0-kuandu@0',
+                                itemstep: '2',
+                                itemtype: 'input',
+                                itemvalue: ''
+                            }]}
+
                     }],
-                    '1':[{
-                        itemname:'水晶',
-                        itemattr:'1-shui',
-                        itemvalue:''
-                    },{
-                        itemname:'燃气',
-                        itemattr:'1-ran',
-                        itemvalue:''
-                    },{
-                        itemname:'人口',
-                        itemattr:'1-penple',
-                        itemvalue:''
+                    '1': [{
+                        itemname: '水晶',
+                        itemattr: '1-shui',
+                        itemvalue: ''
+                    }, {
+                        itemname: '燃气',
+                        itemattr: '1-ran',
+                        itemvalue: ''
+                    }, {
+                        itemname: '人口',
+                        itemattr: '1-penple',
+                        itemvalue: ''
                     }],
                 },
-                clicked:false,
+                clicked: false,
                 username: '',
                 password: '',
+                columns: [],
                 value1: 0,
                 option1: [
                     {text: '钢、木等结构的安全验算', value: 0},
@@ -112,70 +191,78 @@
         },
         methods: {
             onSubmit(values) {
+                if (this.step === '1') {
+                    this.step = '2'
+                    this.calculatePath(values['0-heng'], values['0-zong'], values['0-kuadu'], values['0-cenggao'])
+                    return
+                }
                 console.log('submit', values);
-                // this.clicked=true
-                this.calculatePath(values['0-heng'],values['0-zong'],values['0-kuadu'],values['0-cenggao'])
+
             },
-            setzong(svg,hang,zong,hc,zg) {
-                for (var i=0;i<hang;i++) {
+            onChange(change) {
+                console.log('change', change);
+            },
+            setzong(svg, hang, zong, hc, zg) {
+                for (var i = 0; i < hang; i++) {
                     svg.append('line')
                         .style("stroke", "#b021ad")
                         .style("stroke-width", 3)
-                        .attr("x1", hc*i)
+                        .attr("x1", hc * i)
                         .attr("y1", 0)
-                        .attr("x2", hc*i)
-                        .attr("y2", zg*(zong-1));
+                        .attr("x2", hc * i)
+                        .attr("y2", zg * (zong - 1));
                 }
             },
-            sethang(svg,hang,zong,hc,zg) {
-                for (var i=0;i<zong;i++) {
+            sethang(svg, hang, zong, hc, zg) {
+                for (var i = 0; i < zong; i++) {
                     if (i == zong - 1) {
                         svg.append('line')
                             .style("stroke", "black")
                             .style("stroke-width", 4)
                             .attr("x1", 0)
-                            .attr("y1", zg*i)
-                            .attr("x2", hc*(hang-1))
-                            .attr("y2", zg*i);
-                    }else {
+                            .attr("y1", zg * i)
+                            .attr("x2", hc * (hang - 1))
+                            .attr("y2", zg * i);
+                    } else {
                         svg.append('line')
                             .style("stroke", "#b021ad")
                             .style("stroke-width", 3)
                             .attr("x1", 0)
-                            .attr("y1", zg*i)
-                            .attr("x2", hc*(hang-1))
-                            .attr("y2", zg*i);
+                            .attr("y1", zg * i)
+                            .attr("x2", hc * (hang - 1))
+                            .attr("y2", zg * i);
                     }
 
                 }
             },
-            setjiaodian(svg,hang,zong,hc,zg) {
-                var hangarr=[]
-                var zongarr=[]
-                for (var i=0;i<hang;i++) {
-                    hangarr.push(i*hc)
+            setjiaodian(svg, hang, zong, hc, zg) {
+                var hangarr = []
+                var zongarr = []
+                for (var i = 0; i < hang; i++) {
+                    hangarr.push(i * hc)
                 }
-                for (var k=0;k<zong;k++) {
-                    zongarr.push(k*zg)
+                for (var k = 0; k < zong; k++) {
+                    zongarr.push(k * zg)
                 }
-                for (var a=0;a<hangarr.length;a++) {
-                    for (var j=0;j<zongarr.length;j++) {
+                for (var a = 0; a < hangarr.length; a++) {
+                    for (var j = 0; j < zongarr.length; j++) {
                         svg.append('text')
                             .attr('x', hangarr[a])
                             .attr('y', zongarr[j])
                             .attr('dy', '1em')
-                            .text('A'+a+j)
+                            .text('A' + a + j)
+                        this.columns.push('A' + a + j)
                     }
                 }
             },
-            drawfang(svg,hang,zong,hc,zg){
-                this.sethang(svg,hang,zong,hc,zg)
-                this.setzong(svg,hang,zong,hc,zg)
-                this.setjiaodian(svg,hang,zong,hc,zg)
+            drawfang(svg, hang, zong, hc, zg) {
+                this.sethang(svg, hang, zong, hc, zg)
+                this.setzong(svg, hang, zong, hc, zg)
+                this.setjiaodian(svg, hang, zong, hc, zg)
             },
-            calculatePath(hang,zong,hc,zg) {
+            calculatePath(hang, zong, hc, zg) {
                 d3.selectAll("svg").remove();
-                var width = '100%', height = 700;
+                var width = '100%', height = 500;
                 var zoom = d3.zoom()
                     .scaleExtent([0.1, 10])  //缩放范围
                     .on("zoom", zoomed);
@@ -184,12 +271,14 @@
                     .attr("width", width)
                     .attr("height", height)
                     .call(zoom)
+
                 function zoomed({transform}) {
                     container.attr("transform", transform);
                 }
-                var container=svg.append("g")
+
+                var container = svg.append("g")
                     .attr('transform', "translate(10, 10)")
-                this.drawfang(container,hang,zong,hc,zg)
+                this.drawfang(container, hang, zong, hc, zg)
             },
         },
 
