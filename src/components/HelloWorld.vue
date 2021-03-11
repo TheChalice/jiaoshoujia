@@ -15,7 +15,7 @@
         <!--                @change="onChange"-->
         <!--        />-->
         <van-button type="info" @click="addattr" v-show="step==='2'" style="float: left;">增加属性</van-button>
-        <van-form @submit="onSubmit" >
+        <van-form @submit="onSubmit">
 
             <div v-for="(item)  in listmap[value1]" :key="item.username" v-show="item.itemstep===step">
 
@@ -50,7 +50,8 @@
 
                     </div>
                     <van-divider :style="{ color: '#1989fa', borderColor: '#1989fa', padding: '0 16px' }">
-                    test</van-divider>
+                        test
+                    </van-divider>
                 </div>
 
             </div>
@@ -67,6 +68,12 @@
             </van-row>
 
         </van-form>
+        <van-tabbar v-model="active">
+            <van-tabbar-item icon="home-o">云计算</van-tabbar-item>
+            <van-tabbar-item icon="search" dot>搜索</van-tabbar-item>
+            <van-tabbar-item icon="friends-o" badge="5">联系</van-tabbar-item>
+            <van-tabbar-item icon="setting-o" badge="20">设置</van-tabbar-item>
+        </van-tabbar>
     </div>
 </template>
 
@@ -82,6 +89,7 @@
         data() {
             return {
                 line: '',
+                active: 0,
                 step: '1',
                 listmap: {
                     '0': [{
@@ -134,19 +142,20 @@
                         itemtype: 'radio',
                         itemvalue: '圆形',
                         itemradioarr: ['圆形', '柱形'],
-                        itemchicun:{'圆形':[{
+                        itemchicun: {
+                            '圆形': [{
                                 itemname: '外径',
                                 itemattr: '0-waijing@0',
                                 itemstep: '2',
                                 itemtype: 'input',
                                 itemvalue: ''
-                            },{
+                            }, {
                                 itemname: '壁厚',
                                 itemattr: '0-bihou@0',
                                 itemstep: '2',
                                 itemtype: 'input',
                                 itemvalue: ''
-                            }],'柱形':[{
+                            }], '柱形': [{
                                 itemname: '总高度',
                                 itemattr: '0-zonggaodu@0',
                                 itemstep: '2',
@@ -170,7 +179,8 @@
                                 itemstep: '2',
                                 itemtype: 'input',
                                 itemvalue: ''
-                            }]}
+                            }]
+                        }
 
                     }],
                     '1': [],
@@ -178,10 +188,10 @@
                 clicked: false,
                 columns: [],
                 value1: 0,
-                wordArr:[],
+                wordArr: [],
                 buttontext: '构建',
-                stepindex:0,
-                toppointceng:[],
+                stepindex: 0,
+                toppointceng: [],
                 option1: [
                     {text: '平面框架和桁架的内力计算', value: 0},
                     {text: '钢筋混凝土配筋验算', value: 1},
@@ -203,16 +213,17 @@
         },
         methods: {
             onSubmit(values) {
+                console.log(this.active);
                 if (this.step === '1') {
                     this.step = '2'
                     this.buttontext = '设置属性'
-                    this.calculatePath( values['0-zong'],values['0-heng'], values['0-kuadu'], values['0-cenggao'])
-                    for (var i = 0; i <values['0-heng']; i++) {
-                        this.toppointceng.push(this.wordArr[i]+'0~'+this.wordArr[i]+values['0-zong'])
+                    this.calculatePath(values['0-zong'], values['0-heng'], values['0-kuadu'], values['0-cenggao'])
+                    for (var i = 0; i < values['0-heng']; i++) {
+                        this.toppointceng.push(this.wordArr[i] + '0~' + this.wordArr[i] + values['0-zong'])
                     }
-                    console.log('zong',this.toppointceng);
+                    console.log('zong', this.toppointceng);
                     return
-                }else if(this.step === '2') {
+                } else if (this.step === '2') {
                     this.step = '3'
                     this.buttontext = '计算'
                     console.log('columns', this.columns);
@@ -222,25 +233,25 @@
 
             },
             addattr() {
-                this.stepindex=parseInt(this.stepindex)+1
+                this.stepindex = parseInt(this.stepindex) + 1
                 console.log('this.stepindex', this.stepindex);
                 this.listmap['0'].push({
                     itemname: '起点',
-                    itemattr: '0-source@'+this.stepindex,
+                    itemattr: '0-source@' + this.stepindex,
                     itemstep: '2',
                     itemtype: 'input',
                     itemvalue: ''
                 })
                 this.listmap['0'].push({
                     itemname: '终点',
-                    itemattr: '0-target@'+this.stepindex,
+                    itemattr: '0-target@' + this.stepindex,
                     itemstep: '2',
                     itemtype: 'input',
                     itemvalue: ''
                 })
                 this.listmap['0'].push({
                     itemname: '材料',
-                    itemattr: '0-cailiao@'+this.stepindex,
+                    itemattr: '0-cailiao@' + this.stepindex,
                     itemstep: '2',
                     itemtype: 'radio',
                     itemvalue: 'Q235',
@@ -248,52 +259,54 @@
                 })
                 this.listmap['0'].push({
                     itemname: '截面形状',
-                    itemattr: '0-jiemian@'+this.stepindex,
+                    itemattr: '0-jiemian@' + this.stepindex,
                     itemstep: '2',
                     itemtype: 'radio',
                     itemvalue: '圆形',
                     itemradioarr: ['圆形', '柱形'],
-                    itemchicun:{'圆形':[{
+                    itemchicun: {
+                        '圆形': [{
                             itemname: '外径',
-                            itemattr: '0-waijing@'+this.stepindex,
+                            itemattr: '0-waijing@' + this.stepindex,
                             itemstep: '2',
                             itemtype: 'input',
                             itemvalue: ''
-                        },{
+                        }, {
                             itemname: '壁厚',
-                            itemattr: '0-bihou@'+this.stepindex,
+                            itemattr: '0-bihou@' + this.stepindex,
                             itemstep: '2',
                             itemtype: 'input',
                             itemvalue: ''
-                        }],'柱形':[{
+                        }], '柱形': [{
                             itemname: '总高度',
-                            itemattr: '0-zonggaodu@'+this.stepindex,
+                            itemattr: '0-zonggaodu@' + this.stepindex,
                             itemstep: '2',
                             itemtype: 'input',
                             itemvalue: ''
                         }, {
                             itemname: '翼缘宽度',
-                            itemattr: '0-yiyuankuan@'+this.stepindex,
+                            itemattr: '0-yiyuankuan@' + this.stepindex,
                             itemstep: '2',
                             itemtype: 'input',
                             itemvalue: ''
                         }, {
                             itemname: '翼缘厚度',
-                            itemattr: '0-yiyuanhou@'+this.stepindex,
+                            itemattr: '0-yiyuanhou@' + this.stepindex,
                             itemstep: '2',
                             itemtype: 'input',
                             itemvalue: ''
                         }, {
                             itemname: '腹板厚度',
-                            itemattr: '0-fubanhou@'+this.stepindex,
+                            itemattr: '0-fubanhou@' + this.stepindex,
                             itemstep: '2',
                             itemtype: 'input',
                             itemvalue: ''
-                        }]}
+                        }]
+                    }
 
                 })
             },
-            sethang (svg, hang, zong, hc, zg) {
+            sethang(svg, hang, zong, hc, zg) {
                 for (var i = 0; i < hang; i++) {
                     svg.append('line')
                         .style("stroke", "hsl(298deg 100% 50%)")
@@ -304,7 +317,7 @@
                         .attr("y2", zg * (zong - 1));
                 }
             },
-            setzong (svg, hang, zong, hc, zg) {
+            setzong(svg, hang, zong, hc, zg) {
 
                 for (var i = 0; i < zong; i++) {
                     if (i == zong - 1) {
@@ -348,13 +361,13 @@
                             .attr('y', zongarr[j])
                             .attr('dy', '1em')
                             .text(this.wordArr[j] + a)
-                        this.columns.push({'name':this.wordArr[j]+ a,'point':{'x':hangarr[a],'y':zongarr[j]}})
+                        this.columns.push({'name': this.wordArr[j] + a, 'point': {'x': hangarr[a], 'y': zongarr[j]}})
                     }
                 }
             },
             drawfang(svg, hang, zong, hc, zg) {
-                hang=parseInt(hang)+1
-                zong=parseInt(zong)+1
+                hang = parseInt(hang) + 1
+                zong = parseInt(zong) + 1
                 this.sethang(svg, hang, zong, hc, zg)
                 this.setzong(svg, hang, zong, hc, zg)
                 this.setjiaodian(svg, hang, zong, hc, zg)
