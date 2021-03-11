@@ -39,7 +39,7 @@
                         </van-radio-group>
                     </template>
                 </van-field>
-                <div v-if="item.itemname==='截面形状'" style="padding-bottom: 20px;">
+                <div v-if="item.itemname==='截面形状'" style="">
                     <div v-for="(chicun)  in item.itemchicun[item.itemvalue]" :key="chicun.username">
                         <van-field v-model=chicun.itemvalue
                                    v-if="chicun.itemtype==='input'"
@@ -49,13 +49,14 @@
                         />
 
                     </div>
-
+                    <van-divider :style="{ color: '#1989fa', borderColor: '#1989fa', padding: '0 16px' }">
+                    test</van-divider>
                 </div>
 
             </div>
 
             <div style="margin: 16px;">
-                <van-button v-show="!clicked" round block type="info" native-type="submit">计算</van-button>
+                <van-button v-show="!clicked" round block type="info" native-type="submit">{{buttontext}}</van-button>
                 <!--                <van-button v-show="clicked" loading round block  type="info" loading-text="计算中..." />-->
             </div>
             <van-row>
@@ -175,10 +176,12 @@
                     '1': [],
                 },
                 clicked: false,
-                username: '',
-                password: '',
                 columns: [],
                 value1: 0,
+                wordArr:[],
+                buttontext: '构建',
+                stepindex:0,
+                toppointceng:[],
                 option1: [
                     {text: '平面框架和桁架的内力计算', value: 0},
                     {text: '钢筋混凝土配筋验算', value: 1},
@@ -195,36 +198,49 @@
             };
         },
         mounted() {
+
             // this.calculatePath();
         },
         methods: {
             onSubmit(values) {
                 if (this.step === '1') {
                     this.step = '2'
-                    this.calculatePath(values['0-heng'], values['0-zong'], values['0-kuadu'], values['0-cenggao'])
+                    this.buttontext = '设置属性'
+                    this.calculatePath( values['0-zong'],values['0-heng'], values['0-kuadu'], values['0-cenggao'])
+                    for (var i = 0; i <values['0-heng']; i++) {
+                        this.toppointceng.push(this.wordArr[i]+'0~'+this.wordArr[i]+values['0-zong'])
+                    }
+                    console.log('zong',this.toppointceng);
+                    return
+                }else if(this.step === '2') {
+                    this.step = '3'
+                    this.buttontext = '计算'
+                    console.log('columns', this.columns);
                     return
                 }
                 console.log('submit', values);
 
             },
             addattr() {
+                this.stepindex=parseInt(this.stepindex)+1
+                console.log('this.stepindex', this.stepindex);
                 this.listmap['0'].push({
                     itemname: '起点',
-                    itemattr: '0-source@1',
+                    itemattr: '0-source@'+this.stepindex,
                     itemstep: '2',
                     itemtype: 'input',
                     itemvalue: ''
                 })
                 this.listmap['0'].push({
                     itemname: '终点',
-                    itemattr: '0-target@1',
+                    itemattr: '0-target@'+this.stepindex,
                     itemstep: '2',
                     itemtype: 'input',
                     itemvalue: ''
                 })
                 this.listmap['0'].push({
                     itemname: '材料',
-                    itemattr: '0-cailiao@1',
+                    itemattr: '0-cailiao@'+this.stepindex,
                     itemstep: '2',
                     itemtype: 'radio',
                     itemvalue: 'Q235',
@@ -232,54 +248,52 @@
                 })
                 this.listmap['0'].push({
                     itemname: '截面形状',
-                    itemattr: '0-jiemian@1',
+                    itemattr: '0-jiemian@'+this.stepindex,
                     itemstep: '2',
                     itemtype: 'radio',
                     itemvalue: '圆形',
                     itemradioarr: ['圆形', '柱形'],
                     itemchicun:{'圆形':[{
                             itemname: '外径',
-                            itemattr: '0-waijing@1',
+                            itemattr: '0-waijing@'+this.stepindex,
                             itemstep: '2',
                             itemtype: 'input',
                             itemvalue: ''
                         },{
                             itemname: '壁厚',
-                            itemattr: '0-bihou@1',
+                            itemattr: '0-bihou@'+this.stepindex,
                             itemstep: '2',
                             itemtype: 'input',
                             itemvalue: ''
                         }],'柱形':[{
                             itemname: '总高度',
-                            itemattr: '0-zonggaodu@1',
+                            itemattr: '0-zonggaodu@'+this.stepindex,
                             itemstep: '2',
                             itemtype: 'input',
                             itemvalue: ''
                         }, {
                             itemname: '翼缘宽度',
-                            itemattr: '0-yiyuankuan@1',
+                            itemattr: '0-yiyuankuan@'+this.stepindex,
                             itemstep: '2',
                             itemtype: 'input',
                             itemvalue: ''
                         }, {
                             itemname: '翼缘厚度',
-                            itemattr: '0-yiyuanhou@1',
+                            itemattr: '0-yiyuanhou@'+this.stepindex,
                             itemstep: '2',
                             itemtype: 'input',
                             itemvalue: ''
                         }, {
                             itemname: '腹板厚度',
-                            itemattr: '0-fubanhou@1',
+                            itemattr: '0-fubanhou@'+this.stepindex,
                             itemstep: '2',
                             itemtype: 'input',
                             itemvalue: ''
                         }]}
 
                 })
-
-                console.log('change', 'change');
             },
-            setzong(svg, hang, zong, hc, zg) {
+            sethang (svg, hang, zong, hc, zg) {
                 for (var i = 0; i < hang; i++) {
                     svg.append('line')
                         .style("stroke", "hsl(298deg 100% 50%)")
@@ -290,7 +304,8 @@
                         .attr("y2", zg * (zong - 1));
                 }
             },
-            sethang(svg, hang, zong, hc, zg) {
+            setzong (svg, hang, zong, hc, zg) {
+
                 for (var i = 0; i < zong; i++) {
                     if (i == zong - 1) {
                         svg.append('line')
@@ -315,6 +330,11 @@
             setjiaodian(svg, hang, zong, hc, zg) {
                 var hangarr = []
                 var zongarr = []
+                for (var w = 65; w < 91; w++) {
+                    this.wordArr.push(String.fromCharCode(w))
+                }
+                // console.log('this.wordArr', this.wordArr);
+
                 for (var i = 0; i < hang; i++) {
                     hangarr.push(i * hc)
                 }
@@ -327,8 +347,8 @@
                             .attr('x', hangarr[a])
                             .attr('y', zongarr[j])
                             .attr('dy', '1em')
-                            .text('A' + a + j)
-                        this.columns.push('A' + a + j)
+                            .text(this.wordArr[j] + a)
+                        this.columns.push({'name':this.wordArr[j]+ a,'point':{'x':hangarr[a],'y':zongarr[j]}})
                     }
                 }
             },
