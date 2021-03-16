@@ -1,7 +1,5 @@
 <template>
-
     <div class="hello">
-
         <van-dropdown-menu active-color="#1989fa">
             <van-dropdown-item v-model="value1" :options="option1"/>
             <!--            <van-dropdown-item v-model="value2" :options="option2" />-->
@@ -14,11 +12,13 @@
         <!--                @cancel="onCancel"-->
         <!--                @change="onChange"-->
         <!--        />-->
-        <van-button type="info" @click="addattr" v-show="step==='2'" style="float: left;">增加属性</van-button>
+        <van-button type="info" @click="addattr" v-show="step==='2'" style="float: left;"><van-icon name="plus" size="10" />增加属性</van-button>
         <van-form @submit="onSubmit">
 
             <div v-for="(item)  in listmap[value1]" :key="item.username" v-show="item.itemstep===step">
-
+                <van-divider v-if="item.itemtype==='fenge'" :style="{ color: '#1989fa', borderColor: '#1989fa', padding: '0 16px' }">
+                    {{item.itemname}}
+                </van-divider>
                 <van-field v-model=item.itemvalue
                            v-if="item.itemtype==='input'"
                            :name=item.itemattr
@@ -50,7 +50,6 @@
 
                     </div>
                     <van-divider :style="{ color: '#1989fa', borderColor: '#1989fa', padding: '0 16px' }">
-                        test
                     </van-divider>
                 </div>
 
@@ -60,7 +59,16 @@
                 <van-button v-show="!clicked" round block type="info" native-type="submit">{{buttontext}}</van-button>
                 <!--                <van-button v-show="clicked" loading round block  type="info" loading-text="计算中..." />-->
             </div>
-            <van-row>
+            <van-list v-show="step==='3'">
+                <p v-for="(item,index) in cailiaolist" :key="index" >
+                    <span v-for="(initem,i) in item" :key="i">
+                        {{i}}:{{initem}}
+                    </span>
+                    <span v-show="item['截面形状']==='圆形'" style="color: #9c27b0">&#9672;</span>
+                    <span v-show="item['截面形状']==='槽型'" style="color: #2196f3">&#9672;</span>
+                </p>
+            </van-list>
+            <van-row >
                 <van-col span="24">
                     <div id="zuobiao">
                     </div>
@@ -141,7 +149,7 @@
                         itemstep: '2',
                         itemtype: 'radio',
                         itemvalue: '圆形',
-                        itemradioarr: ['圆形', '柱形'],
+                        itemradioarr: ['圆形', '槽型'],
                         itemchicun: {
                             '圆形': [{
                                 itemname: '外径',
@@ -155,7 +163,7 @@
                                 itemstep: '2',
                                 itemtype: 'input',
                                 itemvalue: ''
-                            }], '柱形': [{
+                            }], '槽型': [{
                                 itemname: '总高度',
                                 itemattr: '0-zonggaodu@0',
                                 itemstep: '2',
@@ -187,11 +195,13 @@
                 },
                 clicked: false,
                 columns: [],
+                stepmng:{},
                 value1: 0,
                 wordArr: [],
                 buttontext: '构建',
                 stepindex: 0,
                 toppointceng: [],
+                cailiaolist:[],
                 option1: [
                     {text: '平面框架和桁架的内力计算', value: 0},
                     {text: '钢筋混凝土配筋验算', value: 1},
@@ -208,7 +218,6 @@
             };
         },
         mounted() {
-
             // this.calculatePath();
         },
         methods: {
@@ -221,12 +230,66 @@
                     for (var i = 0; i < values['0-heng']; i++) {
                         this.toppointceng.push(this.wordArr[i] + '0~' + this.wordArr[i] + values['0-zong'])
                     }
-                    console.log('zong', this.toppointceng);
+                    // console.log('zong', this.toppointceng);
                     return
-                } else if (this.step === '2') {
+                }
+                else if (this.step === '2') {
+                    // var hascircle=false
+                    // var hascao=false
+
                     this.step = '3'
                     this.buttontext = '计算'
-                    console.log('columns', this.columns);
+                    // console.log('submit', values);
+                    for (const valuesKey in values) {
+                        // console.log('valuesKey', valuesKey.split('@')[1]);
+                        // console.log('valuesKey', valuesKey);
+                        if (valuesKey.indexOf('@')>0&&valuesKey.split('@')[1] === '0') {
+                            if (!this.stepmng['0']) {
+                                this.stepmng['0']=[]
+                            }else {
+                                this.stepmng['0'].push(values[valuesKey])
+                            }
+
+                        }else if (valuesKey.indexOf('@')>0&&valuesKey.split('@')[1] === '1') {
+                            if (!this.stepmng['1']) {
+                                this.stepmng['1']=[]
+                            }else {
+                                this.stepmng['1'].push(values[valuesKey])
+                            }
+
+                        }
+
+                    }
+                    for (const Key in this.stepmng) {
+                        if (this.stepmng[Key][2]&&this.stepmng[Key][2]==="圆形") {
+                            this.cailiaolist.push({'截面形状':"圆形",'外径':this.stepmng[Key][3],'壁厚':this.stepmng[Key][4],'颜色':''})
+                        }else if (this.stepmng[Key][2]&&this.stepmng[Key][2]==="槽型") {
+                            this.cailiaolist.push({'截面形状':"槽型",'总高度':this.stepmng[Key][3],'翼缘宽度':this.stepmng[Key][4],'翼缘厚度':this.stepmng[Key][5],'腹板厚度':this.stepmng[Key][6],'颜色':''})
+                        }
+                    }
+                    console.log('this.cailiaolist',this.cailiaolist);
+                    for (var j = 0; j <this.toppointceng.length; j++) {
+                        this.listmap['0'].push({
+                            itemname: '恒载',
+                                itemattr: '0-hengzai@'+this.toppointceng[j],
+                                itemstep: '3',
+                                itemqujian:this.toppointceng[j],
+                                itemtype: 'input',
+                                itemvalue: ''
+                        },{
+                            itemname: '活载',
+                                itemattr: '0-huozai@'+this.toppointceng[j],
+                                itemstep: '3',
+                                itemqujian:this.toppointceng[j],
+                                itemtype: 'input',
+                                itemvalue: ''
+                        },{
+
+                            itemname:this.toppointceng[j],
+                            itemstep: '3',
+                            itemtype: 'fenge'
+                        },)
+                    }
                     return
                 }
                 console.log('submit', values);
@@ -263,7 +326,7 @@
                     itemstep: '2',
                     itemtype: 'radio',
                     itemvalue: '圆形',
-                    itemradioarr: ['圆形', '柱形'],
+                    itemradioarr: ['圆形', '槽型'],
                     itemchicun: {
                         '圆形': [{
                             itemname: '外径',
@@ -277,7 +340,7 @@
                             itemstep: '2',
                             itemtype: 'input',
                             itemvalue: ''
-                        }], '柱形': [{
+                        }], '槽型': [{
                             itemname: '总高度',
                             itemattr: '0-zonggaodu@' + this.stepindex,
                             itemstep: '2',
@@ -309,7 +372,7 @@
             sethang(svg, hang, zong, hc, zg) {
                 for (var i = 0; i < hang; i++) {
                     svg.append('line')
-                        .style("stroke", "hsl(298deg 100% 50%)")
+                        .style("stroke", "#9c27b0")
                         .style("stroke-width", 3)
                         .attr("x1", hc * i)
                         .attr("y1", 0)
@@ -321,16 +384,16 @@
 
                 for (var i = 0; i < zong; i++) {
                     if (i == zong - 1) {
-                        svg.append('line')
-                            .style("stroke", "black")
-                            .style("stroke-width", 4)
-                            .attr("x1", 0)
-                            .attr("y1", zg * i)
-                            .attr("x2", hc * (hang - 1))
-                            .attr("y2", zg * i);
+                        // svg.append('line')
+                        //     .style("stroke", "black")
+                        //     .style("stroke-width", 4)
+                        //     .attr("x1", 0)
+                        //     .attr("y1", zg * i)
+                        //     .attr("x2", hc * (hang - 1))
+                        //     .attr("y2", zg * i);
                     } else {
                         svg.append('line')
-                            .style("stroke", "hsl(298deg 100% 50%)")
+                            .style("stroke", "#9c27b0")
                             .style("stroke-width", 3)
                             .attr("x1", 0)
                             .attr("y1", zg * i)
@@ -403,7 +466,9 @@
     h3 {
         margin: 40px 0 0;
     }
-
+    .van-cell::after {
+        border: none;
+    }
     ul {
         list-style-type: none;
         padding: 0;
