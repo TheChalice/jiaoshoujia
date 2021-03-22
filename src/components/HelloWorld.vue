@@ -319,38 +319,41 @@
                         for (const Key in this.stepmng) {
                             if (this.stepmng[Key][0] === this.postobj.attr[attri].source.point && this.stepmng[Key][1] === this.postobj.attr[attri].target.point) {
                                 console.log('this.postobj.attr[attri]', this.postobj.attr[attri]);
+                                this.postobj.attr[attri]={
+                                    'source':{
+                                        point:this.stepmng[Key][0],
+                                        coordinate:this.columns[this.stepmng[Key][0]]
+                                    },
+                                    'target':{
+                                        point:this.stepmng[Key][1],
+                                        coordinate:this.columns[this.stepmng[Key][1]]
+                                    },
+                                    'material':this.stepmng[Key][2],
+                                    'section':this.stepmng[Key][3],
+                                    'size':{}
+                                }
+                                if (this.stepmng[Key][3]&&this.stepmng[Key][3]==='槽型') {
+                                    this.postobj.attr[attri].size={
+                                        't3':this.stepmng[Key][4],
+                                        't2':this.stepmng[Key][5],
+                                        'tf':this.stepmng[Key][6],
+                                        'tw':this.stepmng[Key][7],
+                                    }
+
+                                }else if (this.stepmng[Key][3]&&this.stepmng[Key][3]==='圆形') {
+                                    this.postobj.attr[attri].size={
+                                        't3':this.stepmng[Key][4],
+                                        'tw':this.stepmng[Key][5],
+                                    }
+                                }
+
                             }
-                            // this.postobj.attr.push({
-                            //     'source':{
-                            //         point:this.stepmng[Key][0],
-                            //         coordinate:this.columns[this.stepmng[Key][0]]
-                            //     },
-                            //     'target':{
-                            //         point:this.stepmng[Key][1],
-                            //         coordinate:this.columns[this.stepmng[Key][1]]
-                            //     },
-                            //     'material':this.stepmng[Key][2],
-                            //     'section':this.stepmng[Key][3],
-                            //     'size':{}
-                            // })
-                            // if (this.stepmng[Key][3]&&this.stepmng[Key][3]=='槽型') {
-                            //     this.postobj.attr[this.postobj.attr.length-1].size={
-                            //         't3':this.stepmng[Key][4],
-                            //         't2':this.stepmng[Key][5],
-                            //         'tf':this.stepmng[Key][6],
-                            //         'tw':this.stepmng[Key][7],
-                            //     }
-                            //
-                            // }else if (this.stepmng[Key][3]&&this.stepmng[Key][3]=='圆形') {
-                            //     this.postobj.attr[this.postobj.attr.length-1].size={
-                            //         't3':this.stepmng[Key][4],
-                            //         'tw':this.stepmng[Key][5],
-                            //     }
-                            // }
+
+
                         }
                     }
 
-                    console.log('this.postobj', this.postobj);
+                    console.log('this.postobj', JSON.stringify(this.postobj));
 
 
                 }
