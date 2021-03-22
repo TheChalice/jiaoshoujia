@@ -14,7 +14,6 @@
         <!--        />-->
         <van-button type="info" @click="addattr" v-show="step==='2'" style="float: left;"><van-icon name="plus" size="10" />增加属性</van-button>
         <van-form @submit="onSubmit">
-
             <div v-for="(item)  in listmap[value1]" :key="item.username" v-show="item.itemstep===step">
                 <van-divider v-if="item.itemtype==='fenge'" :style="{ color: '#1989fa', borderColor: '#1989fa', padding: '0 16px' }">
                     {{item.itemname}}
@@ -54,7 +53,6 @@
                 </div>
 
             </div>
-
             <div style="margin: 16px;">
                 <van-button v-show="!clicked" round block type="info" native-type="submit">{{buttontext}}</van-button>
                 <!--                <van-button v-show="clicked" loading round block  type="info" loading-text="计算中..." />-->
@@ -194,7 +192,7 @@
                     '1': [],
                 },
                 clicked: false,
-                columns: [],
+                columns: {},
                 stepmng:{},
                 value1: 0,
                 wordArr: [],
@@ -202,6 +200,7 @@
                 stepindex: 0,
                 toppointceng: [],
                 cailiaolist:[],
+                selectpoint:[],
                 option1: [
                     {text: '平面框架和桁架的内力计算', value: 0},
                     {text: '钢筋混凝土配筋验算', value: 1},
@@ -230,7 +229,7 @@
                     for (var i = 0; i < values['0-heng']; i++) {
                         this.toppointceng.push(this.wordArr[i] + '0~' + this.wordArr[i] + values['0-zong'])
                     }
-                    // console.log('zong', this.toppointceng);
+                    console.log('this.columns', this.columns);
                     return
                 }
                 else if (this.step === '2') {
@@ -239,35 +238,50 @@
 
                     this.step = '3'
                     this.buttontext = '计算'
-                    // console.log('submit', values);
-                    for (const valuesKey in values) {
-                        // console.log('valuesKey', valuesKey.split('@')[1]);
-                        // console.log('valuesKey', valuesKey);
-                        if (valuesKey.indexOf('@')>0&&valuesKey.split('@')[1] === '0') {
-                            if (!this.stepmng['0']) {
-                                this.stepmng['0']=[]
-                            }else {
-                                this.stepmng['0'].push(values[valuesKey])
-                            }
+                    console.log('stepindex', this.stepindex);
+                    for (var k = 0; k <this.stepindex+1; k++){
+                        for (const valuesKey in values) {
+                            var index=k.toString()
+                            if (valuesKey.indexOf('@')>0&&valuesKey.split('@')[1] ===index) {
+                                if (!this.stepmng[index]) {
+                                    this.stepmng[index]=[]
+                                    this.stepmng[index].push(values[valuesKey])
+                                }else {
+                                    this.stepmng[index].push(values[valuesKey])
+                                }
 
-                        }else if (valuesKey.indexOf('@')>0&&valuesKey.split('@')[1] === '1') {
-                            if (!this.stepmng['1']) {
-                                this.stepmng['1']=[]
-                            }else {
-                                this.stepmng['1'].push(values[valuesKey])
                             }
 
                         }
-
                     }
+                    console.log('this.stepmng', this.stepmng);
                     for (const Key in this.stepmng) {
-                        if (this.stepmng[Key][2]&&this.stepmng[Key][2]==="圆形") {
-                            this.cailiaolist.push({'截面形状':"圆形",'外径':this.stepmng[Key][3],'壁厚':this.stepmng[Key][4],'颜色':''})
-                        }else if (this.stepmng[Key][2]&&this.stepmng[Key][2]==="槽型") {
-                            this.cailiaolist.push({'截面形状':"槽型",'总高度':this.stepmng[Key][3],'翼缘宽度':this.stepmng[Key][4],'翼缘厚度':this.stepmng[Key][5],'腹板厚度':this.stepmng[Key][6],'颜色':''})
+                        console.log(this.stepmng[Key]);
+                        var color='#9c27b0'
+                        if (this.stepmng[Key][3]&&this.stepmng[Key][3]==="圆形") {
+                            color='#9c27b0'
+                            this.selectpoint.push({'color':this.columns[this.stepmng[Key][0]],'source':this.columns[this.stepmng[Key][0]],'target':this.columns[this.stepmng[Key][1]]})
+                            this.cailiaolist.push({'截面形状':"圆形",'外径':this.stepmng[Key][4],'壁厚':this.stepmng[Key][5],'颜色':''})
+                        }else if (this.stepmng[Key][3]&&this.stepmng[Key][3]==="槽型") {
+                            color='#2196f3'
+
+                            this.cailiaolist.push({'截面形状':"槽型",'总高度':this.stepmng[Key][4],'翼缘宽度':this.stepmng[Key][5],'翼缘厚度':this.stepmng[Key][6],'腹板厚度':this.stepmng[Key][7],'颜色':''})
                         }
+                        this.selectpoint.push({'color':color,'source':this.columns[this.stepmng[Key][0]],'target':this.columns[this.stepmng[Key][1]]})
                     }
-                    console.log('this.cailiaolist',this.cailiaolist);
+                    console.log('this.selectpoint',this.selectpoint);
+                    var svg = d3.select("#tubiao")
+                    // console.log('svg', svg);
+                    for (var x = 0; x <this.selectpoint.length; x++) {
+                        svg.append('line')
+                            .style("stroke", this.selectpoint[x].color)
+                            .style("stroke-width", 3)
+                            .attr("x1", this.selectpoint[x].source.x)
+                            .attr("y1", this.selectpoint[x].source.y)
+                            .attr("x2", this.selectpoint[x].target.x)
+                            .attr("y2", this.selectpoint[x].target.y);
+
+                    }
                     for (var j = 0; j <this.toppointceng.length; j++) {
                         this.listmap['0'].push({
                             itemname: '恒载',
@@ -424,7 +438,7 @@
                             .attr('y', zongarr[j])
                             .attr('dy', '1em')
                             .text(this.wordArr[j] + a)
-                        this.columns.push({'name': this.wordArr[j] + a, 'point': {'x': hangarr[a], 'y': zongarr[j]}})
+                        this.columns[this.wordArr[j] + a]={'x': hangarr[a], 'y': zongarr[j]}
                     }
                 }
             },
@@ -452,6 +466,7 @@
                 }
 
                 var container = svg.append("g")
+                    .attr('id', "tubiao")
                     .attr('transform', "translate(10, 10)")
 
                 this.drawfang(container, hang, zong, hc, zg)
@@ -461,7 +476,6 @@
     }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
     h3 {
         margin: 40px 0 0;
