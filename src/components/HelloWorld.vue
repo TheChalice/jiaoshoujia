@@ -307,6 +307,23 @@
                             itemstep: '3',
                             itemtype: 'fenge'
                         },)
+                        var source=this.toppointceng[j].split('~')[0]
+                        var target=this.toppointceng[j].split('~')[1]
+                        this.postobj.load.push({
+                            'region':this.toppointceng[j],
+                            'introduce':`第${j+1}层负载`,
+                            'source':{
+                                point:source,
+                                coordinate:this.columns[source]
+                            },
+                            'target':{
+                                point:target,
+                                coordinate:this.columns[target]
+                            },
+                            'deadload':'',
+                            'liveload':''
+                        })
+
                     }
                     return
                 }else if(this.step === '3'){
@@ -314,7 +331,6 @@
                     this.postobj.m=values['0-heng']
                     this.postobj.H=values['0-cenggao']
                     this.postobj.L=values['0-kuadu']
-                    this.postobj.attr
                     for (var attri = 0; attri <this.postobj.attr.length; attri++) {
                         for (const Key in this.stepmng) {
                             if (this.stepmng[Key][0] === this.postobj.attr[attri].source.point && this.stepmng[Key][1] === this.postobj.attr[attri].target.point) {
@@ -346,9 +362,22 @@
                                         'tw':this.stepmng[Key][5],
                                     }
                                 }
-
                             }
 
+
+                        }
+
+                    }
+                    for (var loadi = 0; loadi <this.postobj.load.length; loadi++){
+                        for (const loadKey in values) {
+                            if (loadKey.split('@')[1] === this.postobj.load[loadi].region) {
+                                // this.postobj.load[loadi].deadload=
+                                if (loadKey.split('@')[0] === '0-hengzai') {
+                                    this.postobj.load[loadi].deadload=values[loadKey]
+                                }else if (loadKey.split('@')[0] === '0-huozai') {
+                                    this.postobj.load[loadi].liveload=values[loadKey]
+                                }
+                            }
 
                         }
                     }
