@@ -94,6 +94,14 @@
         },
         data() {
             return {
+                postobj:{
+                    n:0,
+                    m:0,
+                    H:0,
+                    L:0,
+                    attr:[],
+                    load:[]
+                },
                 line: '',
                 active: 0,
                 step: '1',
@@ -154,13 +162,13 @@
                                 itemattr: '0-waijing@0',
                                 itemstep: '2',
                                 itemtype: 'input',
-                                itemvalue: ''
+                                itemvalue: '6'
                             }, {
                                 itemname: '壁厚',
                                 itemattr: '0-bihou@0',
                                 itemstep: '2',
                                 itemtype: 'input',
-                                itemvalue: ''
+                                itemvalue: '0.25'
                             }], '槽型': [{
                                 itemname: '总高度',
                                 itemattr: '0-zonggaodu@0',
@@ -233,9 +241,6 @@
                     return
                 }
                 else if (this.step === '2') {
-                    // var hascircle=false
-                    // var hascao=false
-
                     this.step = '3'
                     this.buttontext = '计算'
                     console.log('stepindex', this.stepindex);
@@ -280,7 +285,6 @@
                             .attr("y1", this.selectpoint[x].source.y)
                             .attr("x2", this.selectpoint[x].target.x)
                             .attr("y2", this.selectpoint[x].target.y);
-
                     }
                     for (var j = 0; j <this.toppointceng.length; j++) {
                         this.listmap['0'].push({
@@ -305,6 +309,50 @@
                         },)
                     }
                     return
+                }else if(this.step === '3'){
+                    this.postobj.n=values['0-zong']
+                    this.postobj.m=values['0-heng']
+                    this.postobj.H=values['0-cenggao']
+                    this.postobj.L=values['0-kuadu']
+                    this.postobj.attr
+                    for (var attri = 0; attri <this.postobj.attr.length; attri++) {
+                        for (const Key in this.stepmng) {
+                            if (this.stepmng[Key][0] === this.postobj.attr[attri].source.point && this.stepmng[Key][1] === this.postobj.attr[attri].target.point) {
+                                console.log('this.postobj.attr[attri]', this.postobj.attr[attri]);
+                            }
+                            // this.postobj.attr.push({
+                            //     'source':{
+                            //         point:this.stepmng[Key][0],
+                            //         coordinate:this.columns[this.stepmng[Key][0]]
+                            //     },
+                            //     'target':{
+                            //         point:this.stepmng[Key][1],
+                            //         coordinate:this.columns[this.stepmng[Key][1]]
+                            //     },
+                            //     'material':this.stepmng[Key][2],
+                            //     'section':this.stepmng[Key][3],
+                            //     'size':{}
+                            // })
+                            // if (this.stepmng[Key][3]&&this.stepmng[Key][3]=='槽型') {
+                            //     this.postobj.attr[this.postobj.attr.length-1].size={
+                            //         't3':this.stepmng[Key][4],
+                            //         't2':this.stepmng[Key][5],
+                            //         'tf':this.stepmng[Key][6],
+                            //         'tw':this.stepmng[Key][7],
+                            //     }
+                            //
+                            // }else if (this.stepmng[Key][3]&&this.stepmng[Key][3]=='圆形') {
+                            //     this.postobj.attr[this.postobj.attr.length-1].size={
+                            //         't3':this.stepmng[Key][4],
+                            //         'tw':this.stepmng[Key][5],
+                            //     }
+                            // }
+                        }
+                    }
+
+                    console.log('this.postobj', this.postobj);
+
+
                 }
                 console.log('submit', values);
 
@@ -347,13 +395,13 @@
                             itemattr: '0-waijing@' + this.stepindex,
                             itemstep: '2',
                             itemtype: 'input',
-                            itemvalue: ''
+                            itemvalue: '6'
                         }, {
                             itemname: '壁厚',
                             itemattr: '0-bihou@' + this.stepindex,
                             itemstep: '2',
                             itemtype: 'input',
-                            itemvalue: ''
+                            itemvalue: '0.25'
                         }], '槽型': [{
                             itemname: '总高度',
                             itemattr: '0-zonggaodu@' + this.stepindex,
@@ -384,7 +432,10 @@
                 })
             },
             sethang(svg, hang, zong, hc, zg) {
+
                 for (var i = 0; i < hang; i++) {
+                    var X1Y1=''
+                    var X2Y2=''
                     svg.append('line')
                         .style("stroke", "#9c27b0")
                         .style("stroke-width", 3)
@@ -392,20 +443,44 @@
                         .attr("y1", 0)
                         .attr("x2", hc * i)
                         .attr("y2", zg * (zong - 1));
+
+                    for (const Key in this.columns) {
+                        if (this.columns[Key].x === hc * i && this.columns[Key].y === 0) {
+                            X1Y1=Key
+                            // console.log('X1Y1', Key);
+                        }
+                        if (this.columns[Key].x === hc * i && this.columns[Key].y === zg * (zong - 1)) {
+                            X2Y2=Key
+                            // console.log('X2Y2', Key);
+                        }
+                    }
+                    this.postobj.attr.push({
+                        'source':{
+                            point:X1Y1,
+                            coordinate:this.columns[X1Y1]
+                        },
+                        'target':{
+                            point:X2Y2,
+                            coordinate:this.columns[X2Y2]
+                        },
+                        'material':'Q235',
+                        'section':'圆形',
+                        'size':{
+                            't3':'6',
+                            'tw':'0.25',
+                        }
+                    })
+
                 }
+                // console.log('this.postobj', this.postobj);
             },
             setzong(svg, hang, zong, hc, zg) {
-
                 for (var i = 0; i < zong; i++) {
                     if (i == zong - 1) {
-                        // svg.append('line')
-                        //     .style("stroke", "black")
-                        //     .style("stroke-width", 4)
-                        //     .attr("x1", 0)
-                        //     .attr("y1", zg * i)
-                        //     .attr("x2", hc * (hang - 1))
-                        //     .attr("y2", zg * i);
+                        // dibian
                     } else {
+                        var X1Y1=''
+                        var X2Y2=''
                         svg.append('line')
                             .style("stroke", "#9c27b0")
                             .style("stroke-width", 3)
@@ -413,6 +488,30 @@
                             .attr("y1", zg * i)
                             .attr("x2", hc * (hang - 1))
                             .attr("y2", zg * i);
+                        for (const Key in this.columns) {
+                            if (this.columns[Key].x === 0 && this.columns[Key].y === zg * i) {
+                                X1Y1=Key
+                            }
+                            if (this.columns[Key].x === hc * (hang - 1) && this.columns[Key].y === zg * i) {
+                                X2Y2=Key
+                            }
+                        }
+                        this.postobj.attr.push({
+                            'source':{
+                                point:X1Y1,
+                                coordinate:this.columns[X1Y1]
+                            },
+                            'target':{
+                                point:X2Y2,
+                                coordinate:this.columns[X2Y2]
+                            },
+                            'material':'Q235',
+                            'section':'圆形',
+                            'size':{
+                                't3':'6',
+                                'tw':'0.25',
+                            }
+                        })
                     }
 
                 }
@@ -445,9 +544,10 @@
             drawfang(svg, hang, zong, hc, zg) {
                 hang = parseInt(hang) + 1
                 zong = parseInt(zong) + 1
+                this.setjiaodian(svg, hang, zong, hc, zg)
                 this.sethang(svg, hang, zong, hc, zg)
                 this.setzong(svg, hang, zong, hc, zg)
-                this.setjiaodian(svg, hang, zong, hc, zg)
+
             },
             calculatePath(hang, zong, hc, zg) {
                 d3.selectAll("svg").remove();
