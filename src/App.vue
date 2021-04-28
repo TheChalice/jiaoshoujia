@@ -1,7 +1,7 @@
 <template>
     <div id="app">
         <van-nav-bar
-                title="手机云计算建筑施工"
+                title="手机云计算脚手架软件"
         />
         <HelloWorld msg="Welcome to Your Vue.js App"/>
     </div>

@@ -12,7 +12,8 @@
         <!--                @cancel="onCancel"-->
         <!--                @change="onChange"-->
         <!--        />-->
-        <van-button type="info" @click="addattr" v-show="step==='2'" style="float: left;"><van-icon name="plus" size="10" />增加属性</van-button>
+        <van-button type="info" @click="addattr" v-show="step==='2'" style="float: left;">
+            <van-icon name="plus" size="10" />增加属性</van-button>
         <van-form @submit="onSubmit">
             <div v-for="(item)  in listmap[value1]" :key="item.username" v-show="item.itemstep===step">
                 <van-divider v-if="item.itemtype==='fenge'" :style="{ color: '#1989fa', borderColor: '#1989fa', padding: '0 16px' }">
@@ -45,6 +46,8 @@
                                    :name=chicun.itemattr
                                    :label=chicun.itemname
                                    :placeholder=chicun.itemname
+                                   :rules="[{ validator, message: '请输入数字' }]"
+
                         />
 
                     </div>
@@ -85,6 +88,8 @@
 
 <script>
     import * as d3 from 'd3'
+    import { Toast } from 'vant';
+
 
     export default {
 
@@ -123,13 +128,13 @@
                         itemattr: '0-kuadu',
                         itemstep: '1',
                         itemtype: 'input',
-                        itemvalue: '288'
+                        itemvalue: '144'
                     }, {
                         itemname: '层高',
                         itemattr: '0-cenggao',
                         itemstep: '1',
                         itemtype: 'input',
-                        itemvalue: '144'
+                        itemvalue: '72'
                     }, {
                         itemname: '起点',
                         itemattr: '0-source@0',
@@ -221,6 +226,7 @@
                     {text: '电工的常用算法', value: 8},
                     {text: '水暖的常用算法', value: 9},
                 ],
+                pattern: /\d{6}/,
 
             };
         },
@@ -228,6 +234,13 @@
             // this.calculatePath();
         },
         methods: {
+            validator(val) {
+                console.log(val);
+                if (val === '二') {
+                    return false
+                }
+
+            },
             onSubmit(values) {
                 console.log(this.active);
                 if (this.step === '1') {
@@ -259,7 +272,7 @@
 
                         }
                     }
-                    console.log('this.stepmng', this.stepmng);
+                    // console.log('this.stepmng', this.stepmng);
                     for (const Key in this.stepmng) {
                         console.log(this.stepmng[Key]);
                         var color='#9c27b0'
@@ -325,6 +338,7 @@
                         })
 
                     }
+
                     return
                 }else if(this.step === '3'){
                     this.postobj.n=values['0-zong']
@@ -381,7 +395,10 @@
 
                         }
                     }
-
+                    Toast({
+                        message: '成功',
+                        position: 'bottom',
+                    });
                     console.log('this.postobj', JSON.stringify(this.postobj));
 
 
