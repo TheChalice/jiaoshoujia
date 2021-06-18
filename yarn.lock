@@ -1593,6 +1593,12 @@ aws4@^1.8.0:
   version "1.11.0"
   resolved "https://registry.npm.taobao.org/aws4/download/aws4-1.11.0.tgz?cache=0&sync_timestamp=1604101244098&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Faws4%2Fdownload%2Faws4-1.11.0.tgz#d61f46d83b2519250e2784daf5b09479a8b41c59"
 
+axios@^0.21.1:
+  version "0.21.1"
+  resolved "https://registry.npm.taobao.org/axios/download/axios-0.21.1.tgz#22563481962f4d6bde9a76d516ef0e5d3c09b2b8"
+  dependencies:
+    follow-redirects "^1.10.0"
+
 babel-eslint@^10.1.0:
   version "10.1.0"
   resolved "https://registry.npm.taobao.org/babel-eslint/download/babel-eslint-10.1.0.tgz#6968e568a910b78fb3779cdd8b6ac2f479943232"
@@ -2211,13 +2217,13 @@ combined-stream@^1.0.6, combined-stream@~1.0.6:
   dependencies:
     delayed-stream "~1.0.0"
 
+commander@2, commander@^2.18.0, commander@^2.20.0:
+  version "2.20.3"
+  resolved "https://registry.npm.taobao.org/commander/download/commander-2.20.3.tgz?cache=0&sync_timestamp=1607933602027&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fcommander%2Fdownload%2Fcommander-2.20.3.tgz#fd485e84c03eb4881c20722ba48035e8531aeb33"
+
 commander@2.17.x:
   version "2.17.1"
   resolved "https://registry.npm.taobao.org/commander/download/commander-2.17.1.tgz?cache=0&sync_timestamp=1607933602027&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fcommander%2Fdownload%2Fcommander-2.17.1.tgz#bd77ab7de6de94205ceacc72f1716d29f20a77bf"
-
-commander@^2.18.0, commander@^2.20.0:
-  version "2.20.3"
-  resolved "https://registry.npm.taobao.org/commander/download/commander-2.20.3.tgz?cache=0&sync_timestamp=1607933602027&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fcommander%2Fdownload%2Fcommander-2.20.3.tgz#fd485e84c03eb4881c20722ba48035e8531aeb33"
 
 commander@~2.19.0:
   version "2.19.0"
@@ -2346,6 +2352,10 @@ core-js-compat@^3.6.5, core-js-compat@^3.8.0:
 core-js@^3.6.5:
   version "3.8.2"
   resolved "https://registry.npm.taobao.org/core-js/download/core-js-3.8.2.tgz?cache=0&sync_timestamp=1609681982790&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fcore-js%2Fdownload%2Fcore-js-3.8.2.tgz#0a1fd6709246da9ca8eff5bb0cbd15fba9ac7044"
+
+core-js@^3.9.1:
+  version "3.14.0"
+  resolved "https://registry.nlark.com/core-js/download/core-js-3.14.0.tgz?cache=0&sync_timestamp=1622879483099&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fcore-js%2Fdownload%2Fcore-js-3.14.0.tgz#62322b98c71cc2018b027971a69419e2425c2a6c"
 
 core-util-is@1.0.2, core-util-is@~1.0.0:
   version "1.0.2"
@@ -2566,6 +2576,219 @@ cyclist@^1.0.1:
   version "1.0.1"
   resolved "https://registry.npm.taobao.org/cyclist/download/cyclist-1.0.1.tgz#596e9698fd0c80e12038c2b82d6eb1b35b6224d9"
 
+d3-array@2, d3-array@^2.3.0, d3-array@^2.5.0:
+  version "2.12.1"
+  resolved "https://registry.nlark.com/d3-array/download/d3-array-2.12.1.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fd3-array%2Fdownload%2Fd3-array-2.12.1.tgz#e20b41aafcdffdf5d50928004ececf815a465e81"
+  dependencies:
+    internmap "^1.0.0"
+
+d3-axis@2:
+  version "2.1.0"
+  resolved "https://registry.nlark.com/d3-axis/download/d3-axis-2.1.0.tgz?cache=0&sync_timestamp=1623209807257&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fd3-axis%2Fdownload%2Fd3-axis-2.1.0.tgz#978db534092711117d032fad5d733d206307f6a0"
+
+d3-brush@2:
+  version "2.1.0"
+  resolved "https://registry.nlark.com/d3-brush/download/d3-brush-2.1.0.tgz?cache=0&sync_timestamp=1623284769494&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fd3-brush%2Fdownload%2Fd3-brush-2.1.0.tgz#adadfbb104e8937af142e9a6e2028326f0471065"
+  dependencies:
+    d3-dispatch "1 - 2"
+    d3-drag "2"
+    d3-interpolate "1 - 2"
+    d3-selection "2"
+    d3-transition "2"
+
+d3-chord@2:
+  version "2.0.0"
+  resolved "https://registry.nlark.com/d3-chord/download/d3-chord-2.0.0.tgz?cache=0&sync_timestamp=1622918431589&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fd3-chord%2Fdownload%2Fd3-chord-2.0.0.tgz#32491b5665391180560f738e5c1ccd1e3c47ebae"
+  dependencies:
+    d3-path "1 - 2"
+
+"d3-color@1 - 2", d3-color@2:
+  version "2.0.0"
+  resolved "https://registry.nlark.com/d3-color/download/d3-color-2.0.0.tgz?cache=0&sync_timestamp=1622917792948&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fd3-color%2Fdownload%2Fd3-color-2.0.0.tgz#8d625cab42ed9b8f601a1760a389f7ea9189d62e"
+
+d3-contour@2:
+  version "2.0.0"
+  resolved "https://registry.nlark.com/d3-contour/download/d3-contour-2.0.0.tgz?cache=0&sync_timestamp=1622918391856&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fd3-contour%2Fdownload%2Fd3-contour-2.0.0.tgz#80ee834988563e3bea9d99ddde72c0f8c089ea40"
+  dependencies:
+    d3-array "2"
+
+d3-delaunay@5:
+  version "5.3.0"
+  resolved "https://registry.nlark.com/d3-delaunay/download/d3-delaunay-5.3.0.tgz#b47f05c38f854a4e7b3cea80e0bb12e57398772d"
+  dependencies:
+    delaunator "4"
+
+"d3-dispatch@1 - 2", d3-dispatch@2:
+  version "2.0.0"
+  resolved "https://registry.nlark.com/d3-dispatch/download/d3-dispatch-2.0.0.tgz#8a18e16f76dd3fcaef42163c97b926aa9b55e7cf"
+
+d3-drag@2:
+  version "2.0.0"
+  resolved "https://registry.nlark.com/d3-drag/download/d3-drag-2.0.0.tgz?cache=0&sync_timestamp=1623254493007&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fd3-drag%2Fdownload%2Fd3-drag-2.0.0.tgz#9eaf046ce9ed1c25c88661911c1d5a4d8eb7ea6d"
+  dependencies:
+    d3-dispatch "1 - 2"
+    d3-selection "2"
+
+"d3-dsv@1 - 2", d3-dsv@2:
+  version "2.0.0"
+  resolved "https://registry.nlark.com/d3-dsv/download/d3-dsv-2.0.0.tgz?cache=0&sync_timestamp=1622918432430&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fd3-dsv%2Fdownload%2Fd3-dsv-2.0.0.tgz#b37b194b6df42da513a120d913ad1be22b5fe7c5"
+  dependencies:
+    commander "2"
+    iconv-lite "0.4"
+    rw "1"
+
+"d3-ease@1 - 2", d3-ease@2:
+  version "2.0.0"
+  resolved "https://registry.nlark.com/d3-ease/download/d3-ease-2.0.0.tgz#fd1762bfca00dae4bacea504b1d628ff290ac563"
+
+d3-fetch@2:
+  version "2.0.0"
+  resolved "https://registry.nlark.com/d3-fetch/download/d3-fetch-2.0.0.tgz?cache=0&sync_timestamp=1622918432190&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fd3-fetch%2Fdownload%2Fd3-fetch-2.0.0.tgz#ecd7ef2128d9847a3b41b548fec80918d645c064"
+  dependencies:
+    d3-dsv "1 - 2"
+
+d3-force@2:
+  version "2.1.1"
+  resolved "https://registry.nlark.com/d3-force/download/d3-force-2.1.1.tgz?cache=0&sync_timestamp=1622921037410&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fd3-force%2Fdownload%2Fd3-force-2.1.1.tgz#f20ccbf1e6c9e80add1926f09b51f686a8bc0937"
+  dependencies:
+    d3-dispatch "1 - 2"
+    d3-quadtree "1 - 2"
+    d3-timer "1 - 2"
+
+"d3-format@1 - 2", d3-format@2:
+  version "2.0.0"
+  resolved "https://registry.nlark.com/d3-format/download/d3-format-2.0.0.tgz?cache=0&sync_timestamp=1622918432939&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fd3-format%2Fdownload%2Fd3-format-2.0.0.tgz#a10bcc0f986c372b729ba447382413aabf5b0767"
+
+d3-geo@2:
+  version "2.0.2"
+  resolved "https://registry.nlark.com/d3-geo/download/d3-geo-2.0.2.tgz#c065c1b71fe8c5f1be657e5f43d9bdd010383c40"
+  dependencies:
+    d3-array "^2.5.0"
+
+d3-hierarchy@2:
+  version "2.0.0"
+  resolved "https://registry.nlark.com/d3-hierarchy/download/d3-hierarchy-2.0.0.tgz?cache=0&sync_timestamp=1622918433189&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fd3-hierarchy%2Fdownload%2Fd3-hierarchy-2.0.0.tgz#dab88a58ca3e7a1bc6cab390e89667fcc6d20218"
+
+"d3-interpolate@1 - 2", "d3-interpolate@1.2.0 - 2", d3-interpolate@2:
+  version "2.0.1"
+  resolved "https://registry.nlark.com/d3-interpolate/download/d3-interpolate-2.0.1.tgz?cache=0&sync_timestamp=1622918433472&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fd3-interpolate%2Fdownload%2Fd3-interpolate-2.0.1.tgz#98be499cfb8a3b94d4ff616900501a64abc91163"
+  dependencies:
+    d3-color "1 - 2"
+
+"d3-path@1 - 2", d3-path@2:
+  version "2.0.0"
+  resolved "https://registry.nlark.com/d3-path/download/d3-path-2.0.0.tgz?cache=0&sync_timestamp=1622917793236&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fd3-path%2Fdownload%2Fd3-path-2.0.0.tgz#55d86ac131a0548adae241eebfb56b4582dd09d8"
+
+d3-polygon@2:
+  version "2.0.0"
+  resolved "https://registry.nlark.com/d3-polygon/download/d3-polygon-2.0.0.tgz?cache=0&sync_timestamp=1622918433767&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fd3-polygon%2Fdownload%2Fd3-polygon-2.0.0.tgz#13608ef042fbec625ba1598327564f03c0396d8e"
+
+"d3-quadtree@1 - 2", d3-quadtree@2:
+  version "2.0.0"
+  resolved "https://registry.nlark.com/d3-quadtree/download/d3-quadtree-2.0.0.tgz#edbad045cef88701f6fee3aee8e93fb332d30f9d"
+
+d3-random@2:
+  version "2.2.2"
+  resolved "https://registry.nlark.com/d3-random/download/d3-random-2.2.2.tgz#5eebd209ef4e45a2b362b019c1fb21c2c98cbb6e"
+
+d3-scale-chromatic@2:
+  version "2.0.0"
+  resolved "https://registry.nlark.com/d3-scale-chromatic/download/d3-scale-chromatic-2.0.0.tgz#c13f3af86685ff91323dc2f0ebd2dabbd72d8bab"
+  dependencies:
+    d3-color "1 - 2"
+    d3-interpolate "1 - 2"
+
+d3-scale@3:
+  version "3.3.0"
+  resolved "https://registry.nlark.com/d3-scale/download/d3-scale-3.3.0.tgz#28c600b29f47e5b9cd2df9749c206727966203f3"
+  dependencies:
+    d3-array "^2.3.0"
+    d3-format "1 - 2"
+    d3-interpolate "1.2.0 - 2"
+    d3-time "^2.1.1"
+    d3-time-format "2 - 3"
+
+d3-selection@2:
+  version "2.0.0"
+  resolved "https://registry.nlark.com/d3-selection/download/d3-selection-2.0.0.tgz#94a11638ea2141b7565f883780dabc7ef6a61066"
+
+d3-shape@2:
+  version "2.1.0"
+  resolved "https://registry.nlark.com/d3-shape/download/d3-shape-2.1.0.tgz#3b6a82ccafbc45de55b57fcf956c584ded3b666f"
+  dependencies:
+    d3-path "1 - 2"
+
+"d3-time-format@2 - 3", d3-time-format@3:
+  version "3.0.0"
+  resolved "https://registry.nlark.com/d3-time-format/download/d3-time-format-3.0.0.tgz?cache=0&sync_timestamp=1622919666599&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fd3-time-format%2Fdownload%2Fd3-time-format-3.0.0.tgz#df8056c83659e01f20ac5da5fdeae7c08d5f1bb6"
+  dependencies:
+    d3-time "1 - 2"
+
+"d3-time@1 - 2", d3-time@2, d3-time@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.nlark.com/d3-time/download/d3-time-2.1.1.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fd3-time%2Fdownload%2Fd3-time-2.1.1.tgz#e9d8a8a88691f4548e68ca085e5ff956724a6682"
+  dependencies:
+    d3-array "2"
+
+"d3-timer@1 - 2", d3-timer@2:
+  version "2.0.0"
+  resolved "https://registry.nlark.com/d3-timer/download/d3-timer-2.0.0.tgz#055edb1d170cfe31ab2da8968deee940b56623e6"
+
+d3-transition@2:
+  version "2.0.0"
+  resolved "https://registry.nlark.com/d3-transition/download/d3-transition-2.0.0.tgz?cache=0&sync_timestamp=1623283410667&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fd3-transition%2Fdownload%2Fd3-transition-2.0.0.tgz#366ef70c22ef88d1e34105f507516991a291c94c"
+  dependencies:
+    d3-color "1 - 2"
+    d3-dispatch "1 - 2"
+    d3-ease "1 - 2"
+    d3-interpolate "1 - 2"
+    d3-timer "1 - 2"
+
+d3-zoom@2:
+  version "2.0.0"
+  resolved "https://registry.nlark.com/d3-zoom/download/d3-zoom-2.0.0.tgz?cache=0&sync_timestamp=1623287118078&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fd3-zoom%2Fdownload%2Fd3-zoom-2.0.0.tgz#f04d0afd05518becce879d04709c47ecd93fba54"
+  dependencies:
+    d3-dispatch "1 - 2"
+    d3-drag "2"
+    d3-interpolate "1 - 2"
+    d3-selection "2"
+    d3-transition "2"
+
+d3@^6.5.0:
+  version "6.7.0"
+  resolved "https://registry.nlark.com/d3/download/d3-6.7.0.tgz#adac458597b4a2cafe8e08cf30948af0c95cd61f"
+  dependencies:
+    d3-array "2"
+    d3-axis "2"
+    d3-brush "2"
+    d3-chord "2"
+    d3-color "2"
+    d3-contour "2"
+    d3-delaunay "5"
+    d3-dispatch "2"
+    d3-drag "2"
+    d3-dsv "2"
+    d3-ease "2"
+    d3-fetch "2"
+    d3-force "2"
+    d3-format "2"
+    d3-geo "2"
+    d3-hierarchy "2"
+    d3-interpolate "2"
+    d3-path "2"
+    d3-polygon "2"
+    d3-quadtree "2"
+    d3-random "2"
+    d3-scale "3"
+    d3-scale-chromatic "2"
+    d3-selection "2"
+    d3-shape "2"
+    d3-time "2"
+    d3-time-format "3"
+    d3-timer "2"
+    d3-transition "2"
+    d3-zoom "2"
+
 dashdash@^1.12.0:
   version "1.14.1"
   resolved "https://registry.npm.taobao.org/dashdash/download/dashdash-1.14.1.tgz#853cfa0f7cbe2fed5de20326b8dd581035f6e2f0"
@@ -2676,6 +2899,10 @@ del@^4.1.1:
     p-map "^2.0.0"
     pify "^4.0.1"
     rimraf "^2.6.3"
+
+delaunator@4:
+  version "4.0.1"
+  resolved "https://registry.npm.taobao.org/delaunator/download/delaunator-4.0.1.tgz#3d779687f57919a7a418f8ab947d3bddb6846957"
 
 delayed-stream@~1.0.0:
   version "1.0.0"
@@ -3385,6 +3612,10 @@ follow-redirects@^1.0.0:
   version "1.13.1"
   resolved "https://registry.npm.taobao.org/follow-redirects/download/follow-redirects-1.13.1.tgz?cache=0&sync_timestamp=1607916846877&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Ffollow-redirects%2Fdownload%2Ffollow-redirects-1.13.1.tgz#5f69b813376cee4fd0474a3aba835df04ab763b7"
 
+follow-redirects@^1.10.0:
+  version "1.14.1"
+  resolved "https://registry.nlark.com/follow-redirects/download/follow-redirects-1.14.1.tgz?cache=0&sync_timestamp=1620555246888&other_urls=https%3A%2F%2Fregistry.nlark.com%2Ffollow-redirects%2Fdownload%2Ffollow-redirects-1.14.1.tgz#d9114ded0a1cfdd334e164e6662ad02bfd91ff43"
+
 for-in@^1.0.2:
   version "1.0.2"
   resolved "https://registry.npm.taobao.org/for-in/download/for-in-1.0.2.tgz#81068d295a8142ec0ac726c6e2200c30fb6d5e80"
@@ -3842,7 +4073,7 @@ human-signals@^1.1.1:
   version "1.1.1"
   resolved "https://registry.npm.taobao.org/human-signals/download/human-signals-1.1.1.tgz#c5b1cd14f50aeae09ab6c59fe63ba3395fe4dfa3"
 
-iconv-lite@0.4.24, iconv-lite@^0.4.24:
+iconv-lite@0.4, iconv-lite@0.4.24, iconv-lite@^0.4.24:
   version "0.4.24"
   resolved "https://registry.npm.taobao.org/iconv-lite/download/iconv-lite-0.4.24.tgz#2022b4b25fbddc21d2f524974a474aafe733908b"
   dependencies:
@@ -3962,6 +4193,10 @@ internal-ip@^4.3.0:
   dependencies:
     default-gateway "^4.2.0"
     ipaddr.js "^1.9.0"
+
+internmap@^1.0.0:
+  version "1.0.1"
+  resolved "https://registry.nlark.com/internmap/download/internmap-1.0.1.tgz#0017cc8a3b99605f0302f2b198d272e015e5df95"
 
 ip-regex@^2.1.0:
   version "2.1.0"
@@ -6007,6 +6242,10 @@ run-queue@^1.0.0, run-queue@^1.0.3:
   resolved "https://registry.npm.taobao.org/run-queue/download/run-queue-1.0.3.tgz#e848396f057d223f24386924618e25694161ec47"
   dependencies:
     aproba "^1.1.1"
+
+rw@1:
+  version "1.3.3"
+  resolved "https://registry.npm.taobao.org/rw/download/rw-1.3.3.tgz#3f862dfa91ab766b14885ef4d01124bfda074fb4"
 
 rxjs@^6.6.0:
   version "6.6.3"

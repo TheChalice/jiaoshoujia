@@ -89,6 +89,7 @@
 <script>
     import * as d3 from 'd3'
     import { Toast } from 'vant';
+    import axios from "axios";
 
 
     export default {
@@ -340,7 +341,8 @@
                     }
 
                     return
-                }else if(this.step === '3'){
+                }
+                else if(this.step === '3'){
                     this.postobj.n=values['0-zong']
                     this.postobj.m=values['0-heng']
                     this.postobj.H=values['0-cenggao']
@@ -395,11 +397,16 @@
 
                         }
                     }
-                    Toast({
-                        message: '成功',
-                        position: 'bottom',
-                    });
-                    console.log('this.postobj', JSON.stringify(this.postobj));
+
+                    axios.post('/cluster',this.postobj).then(function (data) {
+                        console.log('data', data);
+                        Toast({
+                            message: JSON.stringify(data),
+                            position: 'bottom',
+                        });
+                    })
+                    // console.log('this.postobj', JSON.stringify(this.postobj));
+
 
 
                 }
