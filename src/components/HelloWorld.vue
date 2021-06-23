@@ -243,21 +243,23 @@
 
             },
             onSubmit(values) {
-                console.log(this.active);
+                //console.log(this.active);
                 if (this.step === '1') {
                     this.step = '2'
                     this.buttontext = '设置属性'
                     this.calculatePath(values['0-zong'], values['0-heng'], values['0-kuadu'], values['0-cenggao'])
-                    for (var i = 0; i < values['0-heng']; i++) {
-                        this.toppointceng.push(this.wordArr[i] + '0~' + this.wordArr[i] + values['0-zong'])
-                    }
+                    // for (var i = 0; i < values['0-heng']; i++) {
+                    //     console.log('values[\'0-zong\']', values['0-zong']);
+                    //     this.toppointceng.push(this.wordArr[i] + '0~' + this.wordArr[i] + values['0-zong'])
+                    // }
                     console.log('this.columns', this.columns);
+                    console.log('this.toppointceng', this.toppointceng);
                     return
                 }
                 else if (this.step === '2') {
                     this.step = '3'
                     this.buttontext = '计算'
-                    console.log('stepindex', this.stepindex);
+                    //console.log('stepindex', this.stepindex);
                     for (var k = 0; k <this.stepindex+1; k++){
                         for (const valuesKey in values) {
                             var index=k.toString()
@@ -275,7 +277,7 @@
                     }
                     // console.log('this.stepmng', this.stepmng);
                     for (const Key in this.stepmng) {
-                        console.log(this.stepmng[Key]);
+                       // console.log(this.stepmng[Key]);
                         var color='#9c27b0'
                         if (this.stepmng[Key][3]&&this.stepmng[Key][3]==="圆形") {
                             color='#9c27b0'
@@ -288,7 +290,7 @@
                         }
                         this.selectpoint.push({'color':color,'source':this.columns[this.stepmng[Key][0]],'target':this.columns[this.stepmng[Key][1]]})
                     }
-                    console.log('this.selectpoint',this.selectpoint);
+                    //console.log('this.selectpoint',this.selectpoint);
                     var svg = d3.select("#tubiao")
                     // console.log('svg', svg);
                     for (var x = 0; x <this.selectpoint.length; x++) {
@@ -350,7 +352,7 @@
                     for (var attri = 0; attri <this.postobj.attr.length; attri++) {
                         for (const Key in this.stepmng) {
                             if (this.stepmng[Key][0] === this.postobj.attr[attri].source.point && this.stepmng[Key][1] === this.postobj.attr[attri].target.point) {
-                                console.log('this.postobj.attr[attri]', this.postobj.attr[attri]);
+                                //console.log('this.postobj.attr[attri]', this.postobj.attr[attri]);
                                 this.postobj.attr[attri]={
                                     'source':{
                                         point:this.stepmng[Key][0],
@@ -399,7 +401,7 @@
                     }
 
                     axios.post('/cluster',this.postobj).then(function (data) {
-                        console.log('data', data);
+                        //console.log('data', data);
                         Toast({
                             message: JSON.stringify(data),
                             position: 'bottom',
@@ -532,7 +534,7 @@
             },
             setzong(svg, hang, zong, hc, zg) {
                 for (var i = 0; i < zong; i++) {
-                    if (i == zong - 1) {
+                    if (i === 0) {
                         // dibian
                     } else {
                         var X1Y1=''
@@ -552,6 +554,7 @@
                                 X2Y2=Key
                             }
                         }
+                        this.toppointceng.push(X1Y1+'~'+X2Y2)
                         this.postobj.attr.push({
                             'source':{
                                 point:X1Y1,
@@ -590,12 +593,15 @@
                     for (var j = 0; j < zongarr.length; j++) {
                         svg.append('text')
                             .attr('x', hangarr[a])
-                            .attr('y', zongarr[j])
+                            .attr('y', -zongarr[j])
                             .attr('dy', '1em')
+                            // .attr('baseline-shift', 'sub')
+                            .attr('transform', "scale(1,-1)")
                             .text(this.wordArr[j] + a)
                         this.columns[this.wordArr[j] + a]={'x': hangarr[a], 'y': zongarr[j]}
                     }
                 }
+                console.log('columns',this.columns);
             },
             drawfang(svg, hang, zong, hc, zg) {
                 hang = parseInt(hang) + 1
@@ -607,7 +613,7 @@
             },
             calculatePath(hang, zong, hc, zg) {
                 d3.selectAll("svg").remove();
-                var width = '100%', height = 500;
+                var width = '100%', height = 300;
                 var zoom = d3.zoom()
                     .scaleExtent([0.1, 10])  //缩放范围
                     .on("zoom", zoomed);
@@ -615,15 +621,21 @@
                     .append("svg")
                     .attr("width", width)
                     .attr("height", height)
+                    .attr('transform', "scale(1,-1)")
                     .call(zoom)
 
                 function zoomed({transform}) {
                     container.attr("transform", transform);
                 }
-
+                // let scale = d3.scaleLinear().domain([0, 100]).range([0, 1000]);
+                // var axis = d3.axisLeft(scale);
+                // svg"scale(1,-1)"
+                //     .append("g")
+                //     .attr("transform", "translate(0,30)")
+                //     .call(axis);
                 var container = svg.append("g")
                     .attr('id', "tubiao")
-                    .attr('transform', "translate(10, 10)")
+                    .attr('transform', "translate(30, 50)")
 
                 this.drawfang(container, hang, zong, hc, zg)
             },
