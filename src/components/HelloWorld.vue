@@ -253,7 +253,7 @@
                     //     this.toppointceng.push(this.wordArr[i] + '0~' + this.wordArr[i] + values['0-zong'])
                     // }
                     console.log('this.columns', this.columns);
-                    console.log('this.toppointceng', this.toppointceng);
+                    // console.log('this.toppointceng', this.toppointceng);
                     return
                 }
                 else if (this.step === '2') {
@@ -399,8 +399,37 @@
 
                         }
                     }
-
-                    axios.post('/cluster',this.postobj).then(function (data) {
+                    var newtextpostobj= {
+                        cell:`网格
+X ${this.postobj.m},Y ${this.postobj.n},层高 ${this.postobj.H},跨度 ${this.postobj.L},
+`,
+                        element:[],
+                        load:[]
+                    }
+                    console.log('this.postobj', this.postobj);
+                    if (this.postobj.attr && this.postobj.attr.length) {
+                        this.postobj.attr.forEach(function (item) {
+                            console.log('item', item);
+                            if (item.section === '圆形') {
+                                newtextpostobj.element.push(`单元
+起点名称 ${item.source.point},起点坐标 ${item.source.coordinate.x},${item.source.coordinate.y},终点名称 ${item.target.point},终点坐标 ${item.target.coordinate.x},${item.target.coordinate.y},材料 ${item.material},形状 ${item.section},尺寸 外径 ${item.size.t3},壁厚 ${item.size.tw},
+`)
+                            }else if (item.section === '槽型') {
+                                newtextpostobj.element.push(`单元
+起点名称 ${item.source.point},起点坐标 ${item.source.coordinate.x},${item.source.coordinate.y},终点名称 ${item.target.point},终点坐标 ${item.target.coordinate.x},${item.target.coordinate.y},材料 ${item.material},形状 ${item.section},尺寸 总高度 ${item.size.t3},翼缘宽度 ${item.size.tw}, 翼缘厚度 ${item.size.t2}, 腹板厚度 ${item.size.tf},
+`)
+                            }
+                        })
+                    }
+                    if (this.postobj.load && this.postobj.load.length) {
+                        this.postobj.load.forEach(function (item) {
+                            newtextpostobj.load.push(`负载
+起点名称 ${item.source.point},起点坐标 ${item.source.coordinate.x},${item.source.coordinate.y},终点名称 ${item.target.point},终点坐标 ${item.target.coordinate.x},${item.target.coordinate.y},恒载 ${item.deadload},活载 ${item.liveload},
+`)
+                        })
+                    }
+                    console.log('newtextpostobj', newtextpostobj);
+                    axios.post('/cluster',newtextpostobj).then(function (data) {
                         //console.log('data', data);
                         Toast({
                             message: JSON.stringify(data),

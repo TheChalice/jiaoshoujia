@@ -27,7 +27,8 @@ module.exports = {
     hot: true,
     proxy: {
       '/cluster': {
-        target: 'http://47.95.227.127:10080/',
+        target: 'http://localhost:10080/',
+        // target: 'http://47.95.227.127:10080/',
         changeOrigin: true,
       },
     },
