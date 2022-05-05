@@ -2,6 +2,8 @@
     <div id="app">
         <van-nav-bar
                 title="手机云计算脚手架软件"
+                left-text="首页"
+                @click-left="onClickLeft"
         />
         <HelloWorld msg="Welcome to Your Vue.js App"/>
     </div>
@@ -14,9 +16,9 @@
     export default {
         name: 'App',
         methods: {
-            // onClickLeft() {
-            //     Toast('返回');
-            // },
+            onClickLeft() {
+                location.reload();
+            },
         },
         components: {
             HelloWorld
